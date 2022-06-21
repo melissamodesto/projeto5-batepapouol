@@ -1,0 +1,52 @@
+@media (max-width: 980px) {
+    .header {
+        width: 100%;
+        height: 80px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .container {
+        margin-top: 80px;
+        background-color: #E5E5E5;
+    }
+
+    .logo img {
+        margin: 20px 22px;
+    }
+
+    ion-icon {
+        width: 45px;
+        height: 35px;
+        margin: 20px 22px;
+    }
+
+    .messager {
+        width: 100%;
+        height: 80px;
+        position: fixed;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        bottom: 0;
+        right: 0;
+        box-shadow: 0px -4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .messager input {
+        padding: 20px 22px;
+        width: 100%;
+        height: 80px;
+        border: none;
+        font-family: 'Roboto';
+        font-style: italic;
+        font-weight: 400;
+        line-height: 21px;
+        font-size: 18px;
+    }
+}
