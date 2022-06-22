@@ -1,4 +1,8 @@
 @media (max-width: 980px) {
+    body {
+        background-color: #F3F3F3;
+    }
+
     .header {
         width: 100%;
         height: 80px;
@@ -9,6 +13,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        background: #FFFFFF;
     }
 
     .container {
@@ -26,7 +31,12 @@
         margin: 20px 22px;
     }
 
+    ion-icon:active {
+        transform: scale(0.95);
+    }
+
     .messager {
+        background: #FFFFFF;
         width: 100%;
         height: 80px;
         position: fixed;
@@ -41,7 +51,7 @@
     .messager input {
         padding: 20px 22px;
         width: 100%;
-        height: 80px;
+        height: 40px;
         border: none;
         font-family: 'Roboto';
         font-style: italic;
