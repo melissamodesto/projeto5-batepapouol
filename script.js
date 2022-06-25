@@ -1,8 +1,7 @@
 let participants;
-let message;
+let message = [];
 
 searchMessager();
-choiceUserName();
 
 //Carregar mensagens da API e renderizar na tela
 function searchMessager() {
@@ -13,48 +12,65 @@ function searchMessager() {
 function processMessager(response) {
     message = response.data;
     console.log(message);
-    renderizarMensagem();
+    renderMessage();
 }
 
-function renderizarMensagem() {
+function renderMessage() {
     const container = document.querySelector('.container');
-    container.scrollIntoView(block = 'end', behavior = 'smooth');
-
+    
+    
     for (let i = 0; i < message.length; i++) {
-
-        let messagerTemplate = '';
         
-        messagerTemplate = ` 
-        <div class="enter">
-            <div class="status">
-                <p>(${message[i].time})<strong> ${message[i].from}</strong> ${message[i].text}</p>
-            </div>
-        </div>`;
-        container.innerHTML += messagerTemplate;
+        const from = message[i].from;
+        const text = message[i].text;
+        const time = message[i].time;
+        const to = message[i].to;
+        const type = message[i].type;
 
-        if (message[i].type === 'message') {
-            messager();
-        }	
+        if (type === 'status') {
+            let messagerTemplate = '';
 
-        if (message[i].type === 'private_message') {
-            privateMessage();
-        }	
+            messagerTemplate = ` 
+            <div class="enter">
+                <div class="status">
+                    <p>(${time})<strong> ${from}</strong> ${text}</p>
+                </div>
+            </div>`;
+            container.innerHTML += messagerTemplate;
+        }
+
+        if (type === 'private_message') {
+            
+            let messagerTemplate = '';
+
+            messagerTemplate = ` 
+            <div class="enter">
+                <div class="private-message">
+                    <p>(${time})<strong> ${from}</strong> para <strong>${to}</strong>: ${text}</p>
+                </div>
+            </div>`;
+            container.innerHTML += messagerTemplate;
+        }
+        
+        if (type === 'message') {
+            
+            let messagerTemplate = '';
+            
+            messagerTemplate = ` 
+            <div class="enter">
+                <div class="message">
+                    <p>(${time})<strong> ${from}</strong> para <strong>${to}</strong>: ${text}</p>
+                    </div>
+            </div>`;
+            container.innerHTML += messagerTemplate;
+        }
     }
-}
-
-function messager() {
-    const status = document.querySelector('.enter');
-    status.classList.add('message');
-    status.classList.remove('status');
-}
-
-function privateMessage() {
-    const status = document.querySelector('.enter');
-    status.classList.add('private-message');
+    
+    container.scrollIntoView({block: 'end'});
 }
 
 //Entrar no bate-papo com o usuário
-let name;
+let user = {};
 
 function choiceUserName() {
     const userName = prompt('Digite seu nome:');
@@ -62,14 +78,33 @@ function choiceUserName() {
     if (userName === undefined || userName === null) {
         choiceUserName();
     } else {
-        user = {
-            name: userName,
-        }
+        user.name = userName
 
         axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', user);
         /* promise.catch(processError); */
-
     }
+}
+
+choiceUserName();
+
+
+function sendMessage() {
+    const message = document.querySelector('input').value;
+    const userObj = {
+        text: message,
+        to: 'Todos',
+        from: user.name,
+        type: 'message',
+    }
+
+    axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', userObj)
+        .then(function (response) {
+            searchMessager();
+        })
+        .then(function () {
+            document.querySelector('input').value = '';
+        });
+    /* promise.catch(processError); */
 }
 
 /* let error;
