@@ -117,7 +117,7 @@ function choiceUserName() {
 setTimeout(function showMessage() {
     login = document.querySelector('.login');
     login.classList.add('hidden');
-}, 5000);
+}, 8000);
 
 /* choiceUserName(); */
 
