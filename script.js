@@ -1,15 +1,15 @@
 let participants;
 let message = [];
 
-searchMessager();
+searchMessage();
 
 //Carregar mensagens da API e renderizar na tela
-function searchMessager() {
+function searchMessage() {
     const promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/messages');
-    promise.then(processMessager);
+    promise.then(processMessage);
 }
 
-function processMessager(response) {
+function processMessage(response) {
     message = response.data;
     console.log(message);
     renderMessage();
@@ -31,48 +31,48 @@ function renderMessage() {
 
         if (type === 'status') {
 
-            let messagerTemplate = '';
+            let messageTemplate = '';
 
-            messagerTemplate = ` 
+            messageTemplate = ` 
             <div class="enter">
                 <div class="status">
                     <p>(${time})<strong> ${from}</strong> ${text}</p>
                 </div>
             </div>`;
-            container.innerHTML += messagerTemplate;
+            container.innerHTML += messageTemplate;
         }
 
         if (type === 'private_message') {
 
-            let messagerTemplate = '';
+            let messageTemplate = '';
 
-            messagerTemplate = ` 
+            messageTemplate = ` 
             <div class="enter">
                 <div class="private-message">
                     <p>(${time})<strong> ${from}</strong> para <strong>${to}</strong>: ${text}</p>
                 </div>
             </div>`;
-            container.innerHTML += messagerTemplate;
+            container.innerHTML += messageTemplate;
         }
 
         if (type === 'message') {
 
-            let messagerTemplate = '';
+            let messageTemplate = '';
 
-            messagerTemplate = ` 
+            messageTemplate = ` 
             <div class="enter">
                 <div class="message">
                     <p>(${time})<strong> ${from}</strong> para <strong>${to}</strong>: ${text}</p>
                     </div>
             </div>`;
-            container.innerHTML += messagerTemplate;
+            container.innerHTML += messageTemplate;
         }
     }
 
     container.scrollIntoView({ block: 'end' });
 }
 
-setInterval(searchMessager, 3000);
+setInterval(searchMessage, 3000);
 
 //Entrar no bate-papo com o usuário
 let user = {};
@@ -114,7 +114,7 @@ function sendMessage() {
 
     axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', userObj)
         .then(function (response) {
-            searchMessager();
+            searchMessage();
         })
         .then(function () {
             document.querySelector('input').value = '';
