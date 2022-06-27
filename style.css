@@ -58,12 +58,13 @@
         padding: 20px 22px;
         width: 100%;
         height: 80px;
-        border: inherit;
+        border: none;
         font-family: 'Roboto';
         font-style: italic;
         font-weight: 400;
         line-height: 21px;
         font-size: 18px;
+        outline: none;
     }
 
     .enter div {

@@ -16,11 +16,13 @@ function processMessager(response) {
 }
 
 function renderMessage() {
+
     const container = document.querySelector('.container');
-    
-    
+
+    container.innerHTML = "";
+
     for (let i = 0; i < message.length; i++) {
-        
+
         const from = message[i].from;
         const text = message[i].text;
         const time = message[i].time;
@@ -28,6 +30,7 @@ function renderMessage() {
         const type = message[i].type;
 
         if (type === 'status') {
+
             let messagerTemplate = '';
 
             messagerTemplate = ` 
@@ -40,7 +43,7 @@ function renderMessage() {
         }
 
         if (type === 'private_message') {
-            
+
             let messagerTemplate = '';
 
             messagerTemplate = ` 
@@ -51,11 +54,11 @@ function renderMessage() {
             </div>`;
             container.innerHTML += messagerTemplate;
         }
-        
+
         if (type === 'message') {
-            
+
             let messagerTemplate = '';
-            
+
             messagerTemplate = ` 
             <div class="enter">
                 <div class="message">
@@ -65,9 +68,11 @@ function renderMessage() {
             container.innerHTML += messagerTemplate;
         }
     }
-    
-    container.scrollIntoView({block: 'end'});
+
+    container.scrollIntoView({ block: 'end' });
 }
+
+setInterval(searchMessager, 3000);
 
 //Entrar no bate-papo com o usuário
 let user = {};
@@ -80,13 +85,23 @@ function choiceUserName() {
     } else {
         user.name = userName
 
-        axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', user);
-        /* promise.catch(processError); */
+        axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', user)
+            .then(function (response) {
+                setInterval(keepConnected, 5000, user); //Keep connected function
+            })
+
+            .catch(processError); //Se der erro, chama a função processError
+
     }
 }
 
 choiceUserName();
 
+function keepConnected(response) {
+    let promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', user)
+        .catch(disconnected);
+
+}
 
 function sendMessage() {
     const message = document.querySelector('input').value;
@@ -107,7 +122,17 @@ function sendMessage() {
     /* promise.catch(processError); */
 }
 
-/* let error;
+function reload() {
+    window.location.reload();
+}
+
+document.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        sendMessage()
+    }
+})
+
+let error;
 
 function processError() {
 
@@ -122,4 +147,9 @@ function processError() {
         alert('Preencha o campo');
         choiceUserName();
     }
-} */
+}
+
+function disconnected() {
+    alert("Sua sessão expirou. Por favor, entre novamente.");
+    window.location.reload();
+}
