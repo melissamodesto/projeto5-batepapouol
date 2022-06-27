@@ -11,7 +11,6 @@ function searchMessage() {
 
 function processMessage(response) {
     message = response.data;
-    console.log(message);
     renderMessage();
 }
 
@@ -63,48 +62,72 @@ function renderMessage() {
             <div class="enter">
                 <div class="message">
                     <p>(${time})<strong> ${from}</strong> para <strong>${to}</strong>: ${text}</p>
-                    </div>
+                </div>
             </div>`;
             container.innerHTML += messageTemplate;
         }
     }
 
-    container.scrollIntoView({ block: 'end' });
+    /* container.scrollIntoView({ inline: 'nearest', block: 'end', behavior: 'smooth' }); */
+    window.scrollTo(0, container.scrollHeight);
 }
 
 setInterval(searchMessage, 3000);
 
 //Entrar no bate-papo com o usuário
-let user = {};
+let login;
+let user = {
+    name: '',
+};
 
 function choiceUserName() {
-    const userName = prompt('Digite seu nome:');
+    /* const userName = prompt('Digite seu nome:'); */
 
-    if (userName === undefined || userName === null) {
-        choiceUserName();
+    login = document.querySelector('.login');
+
+    let userName = document.querySelector('input').value;
+
+    if (userName === undefined || userName === null || userName === '') {
+        alert('Preencha o campo');
+        reload();
     } else {
-        user.name = userName
+        const input = document.querySelector('input');
+        const button = document.querySelector('button');
+        
+        input.classList.add('hidden');
+        button.classList.add('hidden');
+        
+        const load = document.querySelector('.load');
+        load.classList.remove('hidden');
+
+        user.name = userName;
+
+        /* setTimeout(showMessage(), 2000); */
 
         axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', user)
             .then(function (response) {
                 setInterval(keepConnected, 5000, user); //Keep connected function
             })
-
             .catch(processError); //Se der erro, chama a função processError
 
     }
+
 }
 
-choiceUserName();
+setTimeout(function showMessage() {
+    login = document.querySelector('.login');
+    login.classList.add('hidden');
+}, 5000);
+
+/* choiceUserName(); */
 
 function keepConnected(response) {
     let promise = axios.post('https://mock-api.driven.com.br/api/v6/uol/status', user)
         .catch(disconnected);
-
 }
 
 function sendMessage() {
-    const message = document.querySelector('input').value;
+    const message = document.querySelector('.message-user').value;
     const userObj = {
         text: message,
         to: 'Todos',
@@ -117,7 +140,7 @@ function sendMessage() {
             searchMessage();
         })
         .then(function () {
-            document.querySelector('input').value = '';
+            document.querySelector('.message-user').value = '';
         });
     /* promise.catch(processError); */
 }
@@ -132,18 +155,24 @@ document.addEventListener("keypress", function (e) {
     }
 })
 
+document.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+        choiceUserName()
+    }
+})
+
 let error;
 
 function processError() {
 
     error = erro.response.status;
 
-    if (error === 400) {
+    if (error === '409') {
         alert('Já existe usuário com este nome. Escolha outro nome.');
         choiceUserName();
     }
 
-    if (error === 422) {
+    if (error === '422') {
         alert('Preencha o campo');
         choiceUserName();
     }
