@@ -101,23 +101,22 @@ function choiceUserName() {
         load.classList.remove('hidden');
 
         user.name = userName;
+        
 
-        /* setTimeout(showMessage(), 2000); */
+        setTimeout(showMessage(), 5000);
 
         axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', user)
             .then(function (response) {
                 setInterval(keepConnected, 5000, user); //Keep connected function
             })
             .catch(processError); //Se der erro, chama a função processError
-
     }
-
 }
 
-setTimeout(function showMessage() {
+function showMessage() {
     login = document.querySelector('.login');
     login.classList.add('hidden');
-}, 8000);
+}
 
 /* choiceUserName(); */
 
