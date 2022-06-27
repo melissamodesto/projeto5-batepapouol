@@ -273,11 +273,14 @@ ion-icon:active {
     font-family: 'Roboto';
     font-weight: 400;
     font-size: 14px;
+    word-break: break-all;
+    line-height: 1.6;
 }
 
 .status {
     background-color: #dcdcdc;
     padding: 15px 8px;
+
 }
 
 .message {
@@ -366,8 +369,7 @@ button:active {
 }
 
 button:hover {
-    color: #ffffff;
-    background-color: #939292;
+    color: #424141;
 }
 
 .hidden {
@@ -380,5 +382,5 @@ button:hover {
     position: fixed;
     top: 180px;
     left: 130px;
-    z-index: 2;
+    z-index: 100;
 }
